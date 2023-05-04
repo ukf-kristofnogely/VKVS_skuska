@@ -1,0 +1,21 @@
+version: '1'
+
+services:
+  skuska-php:
+    build:
+      context: .
+      dockerfile: config/Dockerfile
+    image: nogely/skuska:latest
+    expose:
+      - 9000
+    volumes:
+      - ./src:/var/www/html
+  skuska-web:
+    image: library/nginx:1.20.1
+    ports:
+      - "8086:80"
+    depends_on:
+      - skuska-php
+    volumes:
+      - ./src:/var/www/html
+      - ./config/default.conf:/etc/nginx/conf.d/default.conf
